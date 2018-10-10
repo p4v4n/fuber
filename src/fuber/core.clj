@@ -15,8 +15,13 @@
   (GET "/" [] hello)
   (not-found "Page not found."))
 
+(defn wrap-server [hdlr]
+  (fn [req]
+    (assoc-in (hdlr req) [:headers "Server"] "fuber-server")))
+
 (def app
-  (wrap-params  routes))
+  (wrap-server
+   (wrap-params routes)))
 
 (defn -main
   [port]
