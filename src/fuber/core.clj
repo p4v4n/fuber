@@ -1,6 +1,12 @@
-(ns fuber.core)
+(ns fuber.core
+  (:require [ring.adapter.jetty :as jetty]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn hello [req]
+  {:status 200
+   :body "Hello!"
+   :headers {}})
+
+(defn -main
+  [port]
+  (jetty/run-jetty hello
+                   {:port (Integer. port)}))
