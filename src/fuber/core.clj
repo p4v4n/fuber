@@ -1,5 +1,6 @@
 (ns fuber.core
-  (:require [ring.adapter.jetty :as jetty]))
+  (:require [ring.adapter.jetty :as jetty]
+            [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn hello [req]
   {:status 200
@@ -8,5 +9,5 @@
 
 (defn -main
   [port]
-  (jetty/run-jetty hello
+  (jetty/run-jetty (wrap-reload #'hello)
                    {:port (Integer. port)}))
