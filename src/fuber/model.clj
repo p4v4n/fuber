@@ -36,3 +36,10 @@
   "Add n cabs to populate list-of-cabs"
   [n]
   (reset! list-of-available-cabs (helpers/generate-random-cabs n)))
+
+(defn remove-cab-from-available!
+  "revome cab from list of avaliable cabs"
+  [cab]
+  (->> @list-of-available-cabs
+       (remove #(= (:cab-id cab) (:cab-id %)))
+       (reset! list-of-available-cabs)))
