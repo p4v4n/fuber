@@ -13,12 +13,19 @@
                               :longitude 65}
                    :is-hipster false})
 
+
+(defn new-uuid
+  "generate a new uuid"
+  []
+  (str (java.util.UUID/randomUUID)))
+
+
 ;; Generating Data for Testing
 
 ;;generate a random cab
 (defn generate-random-cab
   []
-  {:cab-id (str (java.util.UUID/randomUUID))
+  {:cab-id (new-uuid)
    :location {:latitude (- (rand 180) 90)
               :longitude (- (rand 360) 180)}
    :is-pink (< (rand-int 2) 0.5)})
@@ -31,7 +38,7 @@
 ;;generate a random user
 (defn generate-random-user
   []
-  {:user-id (str (java.util.UUID/randomUUID))
+  {:user-id (new-uuid)
    :location {:latitude (- (rand 180) 90)
               :longitude (- (rand 360) 180)}
    :is-hipster (< (rand-int 2) 0.5)})
