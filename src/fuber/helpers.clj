@@ -85,3 +85,20 @@
          (filter-for-pink-cabs (:is-hipster user))
          (map #(find-distance-with-cab user %))
          select-cab)))
+
+
+;; Assuming 1-unit of distance as 1-km
+(defn calculate-total-amount
+  "calculate total amount for the ride"
+  [ride end-location end-time]
+  (let [start-location (get-in ride [:user :location])
+        start-time (:start-time ride)
+        is-hipster (get-in ride [:user :is-hipster])
+        ride-time-min (/ (- end-time start-time)
+                         60)
+        ride-distance-km (find-distance start-location end-location)]
+    {:total-distance ride-distance-km
+     :total-time ride-time-min
+     :total-amount (+ (if is-hipster 5 0)
+                      ride-time-min
+                      (* ride-distance-km))}))
