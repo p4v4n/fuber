@@ -1,7 +1,7 @@
 (ns fuber.helpers)
 
 ;;example cab info
-(def example-cab {:id "some-uuid"
+(def example-cab {:cab-id "some-uuid"
                   :location {:latitude 50
                              :longitude 70}
                   :is-pink true})
@@ -18,7 +18,7 @@
 ;;generate a random cab
 (defn generate-random-cab
   []
-  {:id (str (java.util.UUID/randomUUID))
+  {:cab-id (str (java.util.UUID/randomUUID))
    :location {:latitude (- (rand 180) 90)
               :longitude (- (rand 360) 180)}
    :is-pink (< (rand-int 2) 0.5)})
@@ -49,10 +49,10 @@
          Math/sqrt)))
 
 
-(defn find-distance-with-id
-  "returns distance between user and cab along with cab-id"
+(defn find-distance-with-cab
+  "returns distance between user and cab along with cab details"
   [user cab]
-  {:id (:id cab)
+  {:cab cab
    :distance (find-distance (:location user)
                             (:location cab))})
 
@@ -66,11 +66,11 @@
     (filter :is-pink list-of-cabs)
     list-of-cabs))
 
-(defn find-nearest-cab-id
-  "find the id of nearest cab to user"
+(defn find-nearest-cab
+  "find the nearest cab to user"
   [user list-of-cabs]
   (->> list-of-cabs
        (filter-for-pink-cabs (:is-hipster user))
-       (map #(find-distance-with-id user %))
+       (map #(find-distance-with-cab user %))
        (apply min-key :distance)
-       :id))
+       :cab))
