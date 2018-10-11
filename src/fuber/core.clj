@@ -2,8 +2,9 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
-            [compojure.core :refer [defroutes GET]]
-            [compojure.route :refer [not-found]]))
+            [compojure.core :refer [defroutes GET POST]]
+            [compojure.route :refer [not-found]]
+            [fuber.handler :refer :all]))
 
 (defn hello
   [req]
@@ -13,6 +14,9 @@
 
 (defroutes routes
   (GET "/" [] hello)
+  (GET "/cabs" [] get-all-cabs)
+  (POST "/ride" [] book-a-ride)
+  (POST "/end" [] end-ride)
   (not-found "Page not found."))
 
 (defn wrap-server [hdlr]
