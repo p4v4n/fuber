@@ -43,3 +43,12 @@
   (->> @list-of-available-cabs
        (remove #(= (:cab-id cab) (:cab-id %)))
        (reset! list-of-available-cabs)))
+
+(defn add-cab-to-active-rides!
+  "add cab-user pair to active-rides list"
+  [user cab]
+  (swap! active-rides conj
+         {:ride-id (helpers/new-uuid)
+          :user user
+          :cab cab
+          :start-time (current-time-stamp)}))
