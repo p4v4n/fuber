@@ -32,6 +32,13 @@
        (filter #(= % (:user-id user)))
        seq))
 
+(defn find-ride-object
+  "return the ride map associated with the user"
+  [user]
+  (->> @active-rides
+       (filter #(= (:user-id user) (get-in % [:user :user-id])))
+       first))
+
 ;;Mutating Stuff
 
 (defn populate-initial-cab-data!
