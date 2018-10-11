@@ -2,6 +2,14 @@
   (:require [fuber.model :as model]
             [fuber.helpers :as helpers]))
 
+(defn handle-redirect [path]
+  {:status 302
+   :headers {"Location" path}
+   :body ""})
+
+(defn home-page
+  [req]
+  (handle-redirect "/cabs"))
 
 (defn handle-error
   [error]
@@ -26,8 +34,8 @@
   (let [user (get-in req [:body :user])
         nearest-cab (helpers/find-nearest-cab user
                                               @model/list-of-available-cabs)]
-    (cond (model/is-user-riding? user)  (handle-error "You can't book 2 cabs at the same time")
-          (nil? nearest-cab)  (handle-error "Sorry.No cabs are currently available")
+    (cond (model/is-user-riding? user) (handle-error "You can't book 2 cabs at the same time")
+          (nil? nearest-cab) (handle-error "Sorry.No cabs are currently available")
           :else (do
                   (model/remove-cab-from-available! nearest-cab)
                   (model/add-cab-to-active-rides! user nearest-cab)

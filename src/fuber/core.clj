@@ -10,14 +10,9 @@
             [fuber.handler :refer :all]
             [fuber.model :as model]))
 
-(defn hello
-  [req]
-  {:status 200
-   :body "Hello!"
-   :headers {}})
 
 (defroutes routes
-  (GET "/" [] hello)
+  (GET "/" [] home-page)
   (GET "/cabs" [] get-all-cabs)
   (POST "/ride" [] book-a-ride)
   (POST "/end" [] end-ride)
