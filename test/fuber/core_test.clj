@@ -17,3 +17,31 @@
                                  :longitude -90}
                                 {:latitude 84
                                  :longitude -95})))))
+
+(deftest nearest-cab-id-tests
+  (testing "testing nearest cab id"
+    (is (= "0773ad28-d09c-4f9e-a56e-6e34031f4ce2"
+           (find-nearest-cab-id {:user-id "b4aaacfe-d68a-4193-b2cd-358e0fcb6bd3"
+                                 :location {:latitude -28.51021355227215
+                                            :longitude -81.73216638874958}
+                                 :is-hipster true}
+                                '({:id "0773ad28-d09c-4f9e-a56e-6e34031f4ce2"
+                                   :location {:latitude -68.39101950550773
+                                              :longitude -84.20921537932544}
+                                   :is-pink true}
+                                  {:id "86843804-e90b-40a7-a1c1-adc3b245ef17"
+                                   :location {:latitude 14.331750709085654
+                                              :longitude -56.723501178613986}
+                                   :is-pink false}
+                                  {:id "89d7d63f-677f-46f8-8101-613e2c90c818"
+                                   :location {:latitude -9.07877347877239
+                                              :longitude 177.63810034669092}
+                                   :is-pink false}
+                                  {:id "b32adc99-8c7e-4705-9411-59b3e94599b1"
+                                   :location {:latitude -51.241657284914474
+                                              :longitude 106.97828376283013}
+                                   :is-pink false}
+                                  {:id "0ef3b3eb-0a17-4d48-942b-3f4b9c8b6cde"
+                                   :location {:latitude -32.316457129458165
+                                              :longitude 15.134705793279494}
+                                   :is-pink true}))))))
