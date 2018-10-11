@@ -65,3 +65,12 @@
   (if is-hipster
     (filter :is-pink list-of-cabs)
     list-of-cabs))
+
+(defn find-nearest-cab-id
+  "find the id of nearest cab to user"
+  [user list-of-cabs]
+  (->> list-of-cabs
+       (filter-for-pink-cabs (:is-hipster user))
+       (map #(find-distance-with-id user %))
+       (apply min-key :distance)
+       :id))
