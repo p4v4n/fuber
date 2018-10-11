@@ -61,3 +61,10 @@
           :user user
           :cab cab
           :start-time (current-time-stamp)}))
+
+(defn remove-ride-from-active!
+  "remove the ride object from active rides"
+  [ride]
+  (->> @active-rides
+       (remove #(= (:ride-id ride) (:ride-id %)))
+       (reset! active-rides)))
