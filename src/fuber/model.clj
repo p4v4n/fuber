@@ -22,3 +22,10 @@
                                              :is-hipster true}
                                       :start-time "unix-timestamp"}})
 
+(defn is-user-riding?
+  "returns true if user is currently riding"
+  [user]
+  (->> @active-rides
+       (map #(get-in % [:user :user-id]))
+       (filter #(= % (:user-id user)))
+       seq))
