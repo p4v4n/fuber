@@ -35,3 +35,16 @@
    :location {:latitude (- (rand 180) 90)
               :longitude (- (rand 360) 180)}
    :is-hipster (< (rand-int 2) 0.5)})
+
+;; Distance Stuff
+
+(defn find-distance
+  "returns distance between 2 locations"
+  [location1 location2]
+  (let [{lat1 :latitude lon1 :longitude} location1
+        {lat2 :latitude lon2 :longitude} location2]
+    (->> [(- lat2 lat1) (- lon2 lon1)]
+         (map #(* % %))
+         (reduce +)
+         Math/sqrt)))
+
