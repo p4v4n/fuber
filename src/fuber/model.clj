@@ -68,3 +68,9 @@
   (->> @active-rides
        (remove #(= (:ride-id ride) (:ride-id %)))
        (reset! active-rides)))
+
+(defn add-cab-to-available!
+  "adds cab to available cabs"
+  [cab]
+  (swap! list-of-available-cabs conj cab))
+
