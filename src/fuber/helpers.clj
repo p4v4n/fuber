@@ -74,10 +74,14 @@
     list-of-cabs))
 
 (defn find-nearest-cab
-  "find the nearest cab to user"
+  "find the nearest cab to user.If none available return nil"
   [user list-of-cabs]
-  (->> list-of-cabs
-       (filter-for-pink-cabs (:is-hipster user))
-       (map #(find-distance-with-cab user %))
-       (apply min-key :distance)
-       :cab))
+  (let [select-cab  (fn [x] (if (empty? x)
+                              nil
+                              (->> x
+                                   (apply min-key :distance)
+                                   :cab)))]
+    (->> list-of-cabs
+         (filter-for-pink-cabs (:is-hipster user))
+         (map #(find-distance-with-cab user %))
+         select-cab)))
