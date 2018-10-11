@@ -48,3 +48,11 @@
          (reduce +)
          Math/sqrt)))
 
+
+(defn find-distance-with-id
+  "returns distance between user and cab along with cab-id"
+  [user cab]
+  {:id (:id cab)
+   :distance (find-distance (:location user)
+                            (:location cab))})
+
