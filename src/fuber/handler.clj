@@ -9,12 +9,16 @@
    :headers {}
    :body error})
 
+(defn handle-json-reply
+  [body]
+  {:status 200
+   :headers {"Content-Type" "text/json"}
+   :body body})
+
 (defn get-all-cabs
   "returns a list of all available cabs"
   [req]
-  {:status 200
-   :headers {"Content-Type" "text/json"}
-   :body  {:cabs @model/list-of-available-cabs}})
+  (handle-json-reply {:cabs @model/list-of-available-cabs}))
 
 (defn book-a-ride
   "books a ride for user and returns the booked-cab"
@@ -27,9 +31,7 @@
           :else (do
                   (model/remove-cab-from-available! nearest-cab)
                   (model/add-cab-to-active-rides! user nearest-cab)
-                  {:status 200
-                   :headers {"Content-Type" "text/json"}
-                   :body {:cab nearest-cab}}))))
+                  (handle-json-reply {:cab nearest-cab})))))
 
 (defn end-ride
   "end ride of user and return the total amount to pay"
@@ -42,6 +44,4 @@
         end-time (model/current-time-stamp)]
     (model/remove-ride-from-active! ride)
     (model/add-cab-to-available! cab-with-updated-location)
-    {:status 200
-     :headers {"Content-Type" "text/json"}
-     :body (helpers/calculate-total-amount ride end-location end-time)}))
+    (handle-json-reply (helpers/calculate-total-amount ride end-location end-time))))
