@@ -29,3 +29,10 @@
        (map #(get-in % [:user :user-id]))
        (filter #(= % (:user-id user)))
        seq))
+
+;;Mutating Stuff
+
+(defn populate-initial-cab-data!
+  "Add n cabs to populate list-of-cabs"
+  [n]
+  (reset! list-of-available-cabs (helpers/generate-random-cabs n)))
