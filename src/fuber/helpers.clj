@@ -56,3 +56,12 @@
    :distance (find-distance (:location user)
                             (:location cab))})
 
+
+;;Finding the Nearest Cab
+
+(defn filter-for-pink-cabs
+  "removes non-pink cabs from list if user is hipster"
+  [is-hipster list-of-cabs]
+  (if is-hipster
+    (filter :is-pink list-of-cabs)
+    list-of-cabs))
