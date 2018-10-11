@@ -5,5 +5,6 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring "1.7.0"]
-                 [compojure "1.6.1"]]
+                 [compojure "1.6.1"]
+                 [ring/ring-json "0.4.0"]]
   :main fuber.core)

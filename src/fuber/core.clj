@@ -2,6 +2,9 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
+            [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
+            [ring.util.response :refer [response]]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :refer [not-found]]
             [fuber.handler :refer :all]))
@@ -24,8 +27,11 @@
     (assoc-in (hdlr req) [:headers "Server"] "fuber-server")))
 
 (def app
-  (wrap-server
-   (wrap-params routes)))
+  (-> routes
+      wrap-server
+      wrap-content-type
+      (wrap-json-body {:keywords? true :bigdecimals? true})
+      wrap-json-response))
 
 (defn -main
   [port]
