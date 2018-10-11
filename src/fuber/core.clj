@@ -7,7 +7,8 @@
             [ring.util.response :refer [response]]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :refer [not-found]]
-            [fuber.handler :refer :all]))
+            [fuber.handler :refer :all]
+            [fuber.model :as model]))
 
 (defn hello
   [req]
@@ -35,5 +36,6 @@
 
 (defn -main
   [port]
+  (model/populate-initial-cab-data! 10)
   (jetty/run-jetty (wrap-reload #'app)
                    {:port (Integer. port)}))
