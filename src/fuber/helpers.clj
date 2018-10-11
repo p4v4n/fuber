@@ -27,3 +27,11 @@
 (defn generate-random-cabs
   [n]
   (repeatedly n #(generate-random-cab)))
+
+;;generate a random user
+(defn generate-random-user
+  []
+  {:user-id (str (java.util.UUID/randomUUID))
+   :location {:latitude (- (rand 180) 90)
+              :longitude (- (rand 360) 180)}
+   :is-hipster (< (rand-int 2) 0.5)})
