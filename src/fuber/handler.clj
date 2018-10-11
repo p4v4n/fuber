@@ -27,4 +27,14 @@
 
 (defn end-ride
   [req]
-  {})
+  (let [user (get-in req [:body :user])
+        ride (model/find-ride-object user)
+        cab (:cab ride)
+        end-location (:location user)
+        cab-with-updated-location (assoc cab :location end-location)
+        end-time (model/current-time-stamp)]
+    (model/remove-ride-from-active! ride)
+    (model/add-cab-to-available! cab-with-updated-location)
+    {:status 200
+     :headers {"Content-Type" "text/json"}
+     :body (helpers/calculate-total-amount ride end-location end-time)}))
