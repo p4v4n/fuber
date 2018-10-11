@@ -1,4 +1,3 @@
-(ns fuber.model)
 (ns fuber.model
   (:require
    [fuber.helpers :as helpers]))
@@ -7,3 +6,7 @@
 
 (def active-rides (atom '()))
 
+
+(defn current-time-stamp
+  []
+  (quot (System/currentTimeMillis) 1000))
