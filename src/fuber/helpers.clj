@@ -69,7 +69,7 @@
 (defn filter-for-pink-cabs
   "removes non-pink cabs from list if user is hipster"
   [is-hipster list-of-cabs]
-  (if is-hipster
+  (if (true? is-hipster)
     (filter :is-pink list-of-cabs)
     list-of-cabs))
 
