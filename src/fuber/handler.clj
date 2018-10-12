@@ -11,7 +11,7 @@
   [req]
   (handle-redirect "/cabs"))
 
-(defn handle-error
+(defn handle-404-error
   [error]
   {:status 404
    :headers {}
@@ -41,8 +41,8 @@
     (let [user (get-in req [:body :user])
           nearest-cab (helpers/find-nearest-cab user
                                                 @model/list-of-available-cabs)]
-      (cond (model/is-user-riding? user) (handle-error "You can't book 2 cabs at the same time")
-            (nil? nearest-cab) (handle-error "Sorry.No cabs are currently available")
+      (cond (model/is-user-riding? user) (handle-404-error "You can't book 2 cabs at the same time")
+            (nil? nearest-cab) (handle-404-error "Sorry.No cabs are currently available")
             :else (do
                     (model/remove-cab-from-available! nearest-cab)
                     (model/add-cab-to-active-rides! user nearest-cab)
@@ -60,7 +60,7 @@
           cab-with-updated-location (assoc cab :location end-location)
           end-time (model/current-time-stamp)]
       (if (nil? ride)
-        (handle-error  "No active ride to end")
+        (handle-404-error  "No active ride to end")
         (do (model/remove-ride-from-active! ride)
             (model/add-cab-to-available! cab-with-updated-location)
             (handle-json-reply (helpers/calculate-total-amount ride end-location end-time)))))
