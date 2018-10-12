@@ -24,6 +24,21 @@
     (is (= '({:is-pink false} {:is-pink true}) (filter-for-pink-cabs false '({:is-pink false} {:is-pink true}))))
     (is (=  '({:a 1 :is-pink true}) (filter-for-pink-cabs true '({:a 1 :is-pink true} {:is-pink false}))))))
 
+(deftest total-amount
+  (testing "testing calculation of total ride amount"
+    (is (= {:total-distance 13.0, :total-time 1, :total-amount 32.0}
+           (calculate-total-amount {:start-time 0
+                                    :user {:is-hipster true
+                                           :location {:latitude 0
+                                                      :longitude 0}}} {:latitude 5
+                                                                       :longitude 12} 60)))
+    (is (= {:total-distance 0.0, :total-time 0, :total-amount 0.0}
+           (calculate-total-amount {:start-time 0
+                                    :user {:is-hipster false
+                                           :location {:latitude 0
+                                                      :longitude 0}}} {:latitude 0
+                                                                       :longitude 0} 0)))))
+
 (deftest nearest-cab-tests
   (testing "testing nearest cab"
     (is (= {:cab-id "0773ad28-d09c-4f9e-a56e-6e34031f4ce2"
@@ -54,3 +69,4 @@
                                 :location {:latitude -32.316457129458165
                                            :longitude 15.134705793279494}
                                 :is-pink true}))))))
+
