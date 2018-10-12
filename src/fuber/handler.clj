@@ -50,6 +50,8 @@
         end-location (:location user)
         cab-with-updated-location (assoc cab :location end-location)
         end-time (model/current-time-stamp)]
-    (model/remove-ride-from-active! ride)
-    (model/add-cab-to-available! cab-with-updated-location)
-    (handle-json-reply (helpers/calculate-total-amount ride end-location end-time))))
+    (if (nil? ride)
+      (handle-error  "No active ride to end")
+      (do (model/remove-ride-from-active! ride)
+          (model/add-cab-to-available! cab-with-updated-location)
+          (handle-json-reply (helpers/calculate-total-amount ride end-location end-time))))))
