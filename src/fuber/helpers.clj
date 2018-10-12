@@ -22,21 +22,21 @@
 
 ;; Generating Data for Testing
 
-;;generate a random cab
 (defn generate-random-cab
+  "generate a random cab"
   []
   {:cab-id (new-uuid)
    :location {:latitude (- (rand 180) 90)
               :longitude (- (rand 360) 180)}
    :is-pink (< (rand-int 2) 0.5)})
 
-;;generate n random cabs
 (defn generate-random-cabs
+  "generate n cabs with random locations"
   [n]
   (repeatedly n #(generate-random-cab)))
 
-;;generate a random user
 (defn generate-random-user
+  "generate a random user"
   []
   {:user-id (new-uuid)
    :location {:latitude (- (rand 180) 90)
@@ -87,7 +87,7 @@
          select-cab)))
 
 
-;; Assuming 1-unit of distance as 1-km
+;;assuming 1-unit of distance as 1-km
 (defn calculate-total-amount
   "calculate total amount for the ride"
   [ride end-location end-time]
@@ -101,4 +101,4 @@
      :total-time ride-time-min
      :total-amount (+ (if is-hipster 5 0)
                       ride-time-min
-                      (* ride-distance-km))}))
+                      (* ride-distance-km 2))}))
