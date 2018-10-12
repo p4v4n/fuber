@@ -87,3 +87,9 @@
                                         :location {:latitude 93.14032406010887
                                                    :longitude -135.50348319303532}
                                         :is-hipster true}}))))
+
+(deftest valid-body-and-generate-random-user
+  (testing "is-valid-body and generate-random-user together"
+    (is (= true (is-valid-body? {:user (generate-random-user)})))
+    (is (= true (is-valid-body? {:user (generate-random-user)})))
+    (is (= true (is-valid-body? {:user (generate-random-user)})))))
