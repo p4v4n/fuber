@@ -18,6 +18,12 @@
                                 {:latitude 84
                                  :longitude -95})))))
 
+(deftest filter-pink-cabs
+  (testing "testing filtering of pink cabs"
+    (is (= '() (filter-for-pink-cabs true '({:is-pink false} {:is-pink false}))))
+    (is (= '({:is-pink false} {:is-pink true}) (filter-for-pink-cabs false '({:is-pink false} {:is-pink true}))))
+    (is (=  '({:a 1 :is-pink true}) (filter-for-pink-cabs true '({:a 1 :is-pink true} {:is-pink false}))))))
+
 (deftest nearest-cab-tests
   (testing "testing nearest cab"
     (is (= {:cab-id "0773ad28-d09c-4f9e-a56e-6e34031f4ce2"
