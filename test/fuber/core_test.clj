@@ -70,3 +70,20 @@
                                            :longitude 15.134705793279494}
                                 :is-pink true}))))))
 
+
+(deftest valid-body
+  (testing "if body of post requests are valid")
+  (is (= false (is-valid-body? nil)))
+  (is (= false (is-valid-body? {:user {}})))
+  (is (= false (is-valid-body? {:user {:user-id "883131a8-61a2-4daa-8441-d7057510c126"
+                                       :location {:latitude 83.14032406010887
+                                                  :longitude "-135.50348319303532"}
+                                       :is-hipster true}})))
+  (is (= true (is-valid-body?  {:user {:user-id "883131a8-61a2-4daa-8441-d7057510c126"
+                                       :location {:latitude 83.14032406010887
+                                                  :longitude -135.50348319303532}
+                                       :is-hipster true}})))
+  (is (= false (is-valid-body?  {:user {:user-id "883131a8-61a2-4daa-8441-d7057510c126"
+                                        :location {:latitude 93.14032406010887
+                                                   :longitude -135.50348319303532}
+                                        :is-hipster true}}))))
