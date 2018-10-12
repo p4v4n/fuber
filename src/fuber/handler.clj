@@ -17,6 +17,12 @@
    :headers {}
    :body error})
 
+(defn handle-400-error
+  []
+  {:status 400
+   :headers {}
+   :body "Invalid Body"})
+
 (defn handle-json-reply
   [body]
   {:status 200
@@ -31,27 +37,31 @@
 (defn book-a-ride
   "books a ride for user and returns the booked-cab"
   [req]
-  (let [user (get-in req [:body :user])
-        nearest-cab (helpers/find-nearest-cab user
-                                              @model/list-of-available-cabs)]
-    (cond (model/is-user-riding? user) (handle-error "You can't book 2 cabs at the same time")
-          (nil? nearest-cab) (handle-error "Sorry.No cabs are currently available")
-          :else (do
-                  (model/remove-cab-from-available! nearest-cab)
-                  (model/add-cab-to-active-rides! user nearest-cab)
-                  (handle-json-reply {:cab nearest-cab})))))
+  (if (helpers/is-valid-body? (:body req))
+    (let [user (get-in req [:body :user])
+          nearest-cab (helpers/find-nearest-cab user
+                                                @model/list-of-available-cabs)]
+      (cond (model/is-user-riding? user) (handle-error "You can't book 2 cabs at the same time")
+            (nil? nearest-cab) (handle-error "Sorry.No cabs are currently available")
+            :else (do
+                    (model/remove-cab-from-available! nearest-cab)
+                    (model/add-cab-to-active-rides! user nearest-cab)
+                    (handle-json-reply {:cab nearest-cab}))))
+    (handle-400-error)))
 
 (defn end-ride
   "end ride of user and return the total amount to pay"
   [req]
-  (let [user (get-in req [:body :user])
-        ride (model/find-ride-object user)
-        cab (:cab ride)
-        end-location (:location user)
-        cab-with-updated-location (assoc cab :location end-location)
-        end-time (model/current-time-stamp)]
-    (if (nil? ride)
-      (handle-error  "No active ride to end")
-      (do (model/remove-ride-from-active! ride)
-          (model/add-cab-to-available! cab-with-updated-location)
-          (handle-json-reply (helpers/calculate-total-amount ride end-location end-time))))))
+  (if (helpers/is-valid-body? (:body req))
+    (let [user (get-in req [:body :user])
+          ride (model/find-ride-object user)
+          cab (:cab ride)
+          end-location (:location user)
+          cab-with-updated-location (assoc cab :location end-location)
+          end-time (model/current-time-stamp)]
+      (if (nil? ride)
+        (handle-error  "No active ride to end")
+        (do (model/remove-ride-from-active! ride)
+            (model/add-cab-to-available! cab-with-updated-location)
+            (handle-json-reply (helpers/calculate-total-amount ride end-location end-time)))))
+    (handle-400-error)))
