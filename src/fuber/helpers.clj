@@ -102,3 +102,15 @@
      :total-amount (+ (if is-hipster 5 0)
                       ride-time-min
                       (* ride-distance-km 2))}))
+
+
+(defn is-valid-body?
+  "validate body of post requests"
+  [body]
+  (let [user (:user body)
+        {:keys [is-hipster user-id]
+         {:keys [latitude longitude]} :location} user]
+    (and (number? latitude)
+         (number? longitude)
+         (<= -90 latitude 90)
+         (<= -180 longitude 180))))
